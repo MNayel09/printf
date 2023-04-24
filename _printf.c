@@ -9,31 +9,35 @@ int _printf(const char *format, ...)
 {
 	va_list args;
 	va_start(args, format);
-
 	int count = 0;
-	while (*format != '\0') {
+
+	for (; *format != '\0'; format++) {
 		if (*format == '%') {
 			format++;
 			switch (*format) {
-				case 'c':
-					count += printf("%c", va_arg(args, int));
+				case 'c': {
+					int c = va_arg(args, int);
+					putchar(c);
+					count++;
 					break;
-				case 's':
-					count += printf("%s", va_arg(args, char *));
+ 				}
+				case 's': {
+					char *s = va_arg(args, char *);
+					fputs(s, stdout);
+					count += strlen(s);
 					break;
-				case '%':
-					count += printf("%%");
+				}
+				case '%': {
+					putchar('%');
+					count++;
 					break;
-				default:
-					count += printf("Invalid format specifier");
-					break;
+				}
 			}
 		} else {
-			count += printf("%c", *format);
+			putchar(*format);
+			count++;
 		}
-		format++;
 	}
-
 	va_end(args);
 	return count;
 }
