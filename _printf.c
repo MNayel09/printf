@@ -26,29 +26,25 @@ int _printf(const char *format, ...)
 					putchar(c);
 					count++;
 					break;
-				}
-				case 's':
+				} case 's':
 				{
 					char *s = va_arg(args, char *);
 
 					fputs(s, stdout);
 					count += strlen(s);
 					break;
-				}
-				case '%':
+				} case '%':
 				{
 					putchar('%');
 					count++;
 					break;
 				}
 			}
-		}
-		else
+		} else
 		{
 			putchar(*format);
 			count++;
 		}
-	}
-	va_end(args);
+	} va_end(args);
 	return (count);
 }
