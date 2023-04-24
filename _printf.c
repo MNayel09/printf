@@ -8,36 +8,47 @@
 int _printf(const char *format, ...)
 {
 	va_list args;
+
 	va_start(args, format);
 	int count = 0;
 
-	for (; *format != '\0'; format++) {
-		if (*format == '%') {
+	for (; *format != '\0'; format++)
+	{
+		if (*format == '%')
+		{
 			format++;
-			switch (*format) {
-				case 'c': {
+			switch (*format)
+			{
+				case 'c':
+				{
 					int c = va_arg(args, int);
+
 					putchar(c);
 					count++;
 					break;
  				}
-				case 's': {
+				case 's':
+				{
 					char *s = va_arg(args, char *);
+
 					fputs(s, stdout);
 					count += strlen(s);
 					break;
 				}
-				case '%': {
+				case '%':
+				{
 					putchar('%');
 					count++;
 					break;
 				}
 			}
-		} else {
+		}
+		else
+		{
 			putchar(*format);
 			count++;
 		}
 	}
 	va_end(args);
-	return count;
+	return (count);
 }
