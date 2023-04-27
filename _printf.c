@@ -12,13 +12,13 @@ int _vprintf(const char *format, va_list args)
 {
 	int count = 0;
 
+	if (format == NULL)
+		return (-1);
 	while (*format != '\0')
 	{
 		if (*format == '%')
 		{
 			format++;
-			if (format == NULL)
-				return (-1);
 			switch (*format)
 			{	case 'c':
 					{ char c = (char)va_arg(args, int);
@@ -28,9 +28,10 @@ int _vprintf(const char *format, va_list args)
 				case 's':
 					{ char *str = va_arg(args, char*);
 
-					if (*str == '\0')
+					if (str == NULL)
+					{ str = "(null)";
 						count += write(STDOUT_FILENO, str, strlen(str));
-					else
+					} else
 						count += write(STDOUT_FILENO, str, strlen(str));
 					} break;
 				case '%':
@@ -39,8 +40,10 @@ int _vprintf(const char *format, va_list args)
 						count += write(STDOUT_FILENO, &c, sizeof(char));
 					} break;
 				default:
-					{ format--;
-						count += write(STDOUT_FILENO, format, sizeof(char));
+					{
+					if (format == NULL)
+						return (0);
+					count += write(STDOUT_FILENO, ++format, sizeof(char));
 					} break;
 			}
 		} else
