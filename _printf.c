@@ -17,8 +17,7 @@ int _vprintf(const char *format, va_list args)
 	while (*format != '\0')
 	{
 		if (*format == '%')
-		{
-			format++;
+		{ format++;
 			switch (*format)
 			{	case 'c':
 					{ char c = (char)va_arg(args, int);
@@ -41,9 +40,9 @@ int _vprintf(const char *format, va_list args)
 					} break;
 				default:
 					{
-					if (format == NULL)
-						return (0);
-					count += write(STDOUT_FILENO, ++format, sizeof(char));
+					if (*format == '\0')
+						return (-1);
+					count += write(STDOUT_FILENO, --format, sizeof(char));
 					} break;
 			}
 		} else
