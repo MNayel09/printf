@@ -12,37 +12,35 @@ int _vprintf(const char *format, va_list args)
 {
 	int count = 0;
 
-	if (format == NULL)
-		return (-1);
 	while (*format != '\0')
 	{
 		if (*format == '%')
 		{
 			format++;
+			if (format == NULL)
+				return (-1);
 			switch (*format)
 			{	case 'c':
-					{
-						char c = (char)va_arg(args, int);
+					{ char c = (char)va_arg(args, int);
 
 						count += write(STDOUT_FILENO, &c, sizeof(char));
 					} break;
 				case 's':
-					{
-						char *str = va_arg(args, char*);
+					{ char *str = va_arg(args, char*);
 
+					if (*str == '\0')
+						count += write(STDOUT_FILENO, str, strlen(str));
+					else
 						count += write(STDOUT_FILENO, str, strlen(str));
 					} break;
 				case '%':
-					{
-						char c = '%';
+					{ char c = '%';
 
 						count += write(STDOUT_FILENO, &c, sizeof(char));
 					} break;
 				default:
-					{
-						char *msg = "Invalid format specifier";
-
-						count += write(STDOUT_FILENO, msg, strlen(msg));
+					{ format--;
+						count += write(STDOUT_FILENO, format, sizeof(char));
 					} break;
 			}
 		} else
